@@ -82,20 +82,33 @@ function movieSearch(userInput) {
 
     axios.get(queryURL).then(function (response) {
         const movie = response.data;
+        const dataBox = [];
 
-        console.log("Title: " + movie.Title);
-        console.log("Year: " + movie.Year);
-        console.log("imdb Rating: " + movie.imdbRating);
+        dataBox.push("Title: " + movie.Title);
+        dataBox.push("Year: " + movie.Year);
+        dataBox.push("imdb Rating: " + movie.imdbRating);
 
         //only logs rotten tomatoes rating if there is one
         if (movie.Ratings[1] !== undefined) {
-            console.log("Rotten Tomatoes: " + movie.Ratings[1].Value);
+            dataBox.push("Rotten Tomatoes: " + movie.Ratings[1].Value);
         }
 
-        console.log("Country: " + movie.Country);
-        console.log("Language: " + movie.Language);
-        console.log("Plot: " + movie.Plot);
-        console.log("Actors: " + movie.Actors);
+        dataBox.push("Country: " + movie.Country);
+        dataBox.push("Language: " + movie.Language);
+        dataBox.push("Plot: " + movie.Plot);
+        dataBox.push("Actors: " + movie.Actors);
+
+        console.log(dataBox);
+
+        for (let i = 0; i < dataBox.length; i++){
+        fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+
+            if (error) {
+                console.log("error");
+            };
+        
+        })
+    }
 
     }).catch(function (error) {
         console.log(error);
@@ -143,3 +156,4 @@ function runLiri(command, userInput) {
 };
 
 runLiri(command, userInput);
+
