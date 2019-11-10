@@ -4,6 +4,8 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 var axios = require('axios');
+var moment = require('moment');
+var fs = require('fs');
 
 //grabs variables from command line
 const command = process.argv[2];
@@ -42,6 +44,34 @@ function songSearch() {
 
 }
 
+function concertSearch() {
+
+    let title = process.argv.slice(3).join("+");
+
+    //default if no input
+    if (title === "") {
+        title = "Asheville+Symphony";
+    }
+
+    let queryURL = "https://rest.bandsintown.com/artists/" + title + "/events?app_id=codingbootcamp"
+
+    axios.get(queryURL).then(function (response) {
+
+        const concert = response.data[0];
+
+        //if no data available
+        if (typeof concert === "undefined"){
+            return console.log("Looks like they're not playing anywhere...");
+        }
+
+        //console.log(concert);
+        console.log("Venue: " + concert.venue.name);
+        console.log("Location: " + concert.venue.city + ", " + concert.venue.region + ", " + concert.venue.country);
+        console.log(moment (concert.datetime).format("MM/DD/YYYY LT"));
+    })
+
+}
+
 function movieSearch() {
 
     let title = process.argv.slice(3).join("+");
@@ -64,8 +94,9 @@ function movieSearch() {
         console.log("imdb Rating: " + movie.imdbRating);
 
         //only logs rotten tomatoes rating if there is one
-        if (movie.Ratings[1] !== undefined){
-        console.log("Rotten Tomatoes: " + movie.Ratings[1].Value);}
+        if (movie.Ratings[1] !== undefined) {
+            console.log("Rotten Tomatoes: " + movie.Ratings[1].Value);
+        }
 
         console.log("Country: " + movie.Country);
         console.log("Language: " + movie.Language);
@@ -84,7 +115,7 @@ switch (command) {
         break;
 
     case "concert-this":
-        console.log("concerttime");
+        concertSearch();
         break;
 
     case "movie-this":
