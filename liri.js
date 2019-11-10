@@ -7,24 +7,22 @@ var axios = require('axios');
 var moment = require('moment');
 var fs = require('fs');
 
-//grabs variables from command line
-const command = process.argv[2];
+//grabs variable from command line
+let command = process.argv[2];
+let userInput = process.argv.slice(3).join(" ");
 
-
-function songSearch() {
-
-    let title = process.argv.slice(3).join(" ");
+function songSearch(userInput) {
 
     //default if no input
-    console.log(title);
-    if (title === "") {
-        title = "The Sign Ace of Base";
+    console.log(userInput);
+    if (userInput === "") {
+        userInput = "The Sign Ace of Base";
     }
 
     spotify.search(
         {
             type: 'track',
-            query: title
+            query: userInput
         }
     ).then(function (response) {
         let data = response.tracks.items[0];
@@ -44,45 +42,41 @@ function songSearch() {
 
 }
 
-function concertSearch() {
-
-    let title = process.argv.slice(3).join("+");
+function concertSearch(userInput) {
 
     //default if no input
-    if (title === "") {
-        title = "Asheville+Symphony";
+    if (userInput === "") {
+        userInput = "Asheville+Symphony";
     }
 
-    let queryURL = "https://rest.bandsintown.com/artists/" + title + "/events?app_id=codingbootcamp"
+    let queryURL = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp";
 
     axios.get(queryURL).then(function (response) {
 
         const concert = response.data[0];
 
         //if no data available
-        if (typeof concert === "undefined"){
+        if (typeof concert === "undefined") {
             return console.log("Looks like they're not playing anywhere...");
         }
 
         //console.log(concert);
         console.log("Venue: " + concert.venue.name);
         console.log("Location: " + concert.venue.city + ", " + concert.venue.region + ", " + concert.venue.country);
-        console.log(moment (concert.datetime).format("MM/DD/YYYY LT"));
+        console.log(moment(concert.datetime).format("MM/DD/YYYY LT"));
     })
 
 }
 
-function movieSearch() {
-
-    let title = process.argv.slice(3).join("+");
+function movieSearch(userInput) {
 
     //default if no input
-    console.log(title)
-    if (title === "") {
-        title = "Mr.+Nobody";
+    console.log(userInput)
+    if (userInput === "") {
+        userInput = "Mr.+Nobody";
     }
 
-    let queryURL = "http://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=trilogy";
+    let queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
 
     //console.log(queryURL);
 
@@ -109,20 +103,43 @@ function movieSearch() {
 
 }
 
-switch (command) {
-    case "spotify-this-song":
-        songSearch();
-        break;
+function readRandom() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
 
-    case "concert-this":
-        concertSearch();
-        break;
+        if (error) {
+            console.log(error);
+        }
 
-    case "movie-this":
-        movieSearch();
-        break;
+        data = data.split(",");
 
-    case "do-what-it-says":
-        console.log("doing it");
-        break;
+        command = data[0];
+        userInput = data[1].replace(/["]/g, "");
+
+        console.log(userInput)
+
+        runLiri(command,userInput);
+
+    })
 }
+
+function runLiri(command, userInput) {
+    switch (command) {
+        case "spotify-this-song":
+            songSearch(userInput);
+            break;
+
+        case "concert-this":
+            concertSearch(userInput);
+            break;
+
+        case "movie-this":
+            movieSearch(userInput);
+            break;
+
+        case "do-what-it-says":
+            readRandom();
+            break;
+    }
+};
+
+runLiri(command, userInput);
