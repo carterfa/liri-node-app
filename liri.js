@@ -15,7 +15,7 @@ let userInput = process.argv.slice(3).join(" ");
 function songSearch(userInput) {
 
     //default if no input
-    console.log(userInput);
+    //console.log(userInput);
     if (userInput === "") {
         userInput = "The Sign Ace of Base";
     }
@@ -30,11 +30,12 @@ function songSearch(userInput) {
         const dataBox = [];
 
         //console logs all song data
+        dataBox.push("Song Title: " + data.name);
         dataBox.push("Artist(s): ");
+        //this just outputs multiple artists separately
         for (let i = 0; i < data.artists.length; i++) {
             dataBox.push(data.artists[i].name);
         }
-        dataBox.push("Song Title: " + data.name);
         dataBox.push("Preview: " + data.preview_url);
         dataBox.push("Album: " + data.album.name);
         
@@ -161,6 +162,7 @@ function readRandom() {
         data = data.split(",");
 
         command = data[0];
+        //removes quotations
         userInput = data[1].replace(/["]/g, "");
 
         console.log(userInput)
@@ -170,6 +172,7 @@ function readRandom() {
     })
 }
 
+//runs Liri commands
 function runLiri(command, userInput) {
     switch (command) {
         case "spotify-this-song":
