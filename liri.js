@@ -38,11 +38,11 @@ function songSearch(userInput) {
         }
         dataBox.push("Preview: " + data.preview_url);
         dataBox.push("Album: " + data.album.name);
-        
+
         //logs items in databox array to console and log.txt
         for (let i = 0; i < dataBox.length; i++) {
             console.log(dataBox[i]);
-            
+
             fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
 
                 if (error) {
@@ -86,7 +86,7 @@ function concertSearch(userInput) {
         //logs items in databox array to console and log.txt
         for (let i = 0; i < dataBox.length; i++) {
             console.log(dataBox[i]);
-            
+
             fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
 
                 if (error) {
@@ -122,8 +122,10 @@ function movieSearch(userInput) {
         dataBox.push("imdb Rating: " + movie.imdbRating);
 
         //only logs rotten tomatoes rating if there is one
-        if (movie.Ratings[1] !== undefined) {
-            dataBox.push("Rotten Tomatoes: " + movie.Ratings[1].Value);
+        if (movie.Ratings !== undefined) {
+            if (movie.Ratings[1] !== undefined) {
+                dataBox.push("Rotten Tomatoes: " + movie.Ratings[1].Value);
+            }
         }
 
         dataBox.push("Country: " + movie.Country);
