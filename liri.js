@@ -11,6 +11,7 @@ var fs = require('fs');
 let command = process.argv[2];
 let userInput = process.argv.slice(3).join(" ");
 
+//spotify search function
 function songSearch(userInput) {
 
     //default if no input
@@ -25,23 +26,38 @@ function songSearch(userInput) {
             query: userInput
         }
     ).then(function (response) {
-        let data = response.tracks.items[0];
+        const data = response.tracks.items[0];
+        const dataBox = [];
 
         //console logs all song data
-        //console.log(data);
-        console.log("Artist(s): ");
+        dataBox.push("Artist(s): ");
         for (let i = 0; i < data.artists.length; i++) {
-            console.log(data.artists[i].name);
+            dataBox.push(data.artists[i].name);
         }
-        console.log("Song Title: " + data.name);
-        console.log("Preview: " + data.preview_url);
-        console.log("Album: " + data.album.name);
+        dataBox.push("Song Title: " + data.name);
+        dataBox.push("Preview: " + data.preview_url);
+        dataBox.push("Album: " + data.album.name);
+        
+        //logs items in databox array to console and log.txt
+        for (let i = 0; i < dataBox.length; i++) {
+            console.log(dataBox[i]);
+            
+            fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+
+                if (error) {
+                    console.log("error");
+                };
+
+            })
+
+        }
     }).catch(function (error) {
         console.log(error);
     });
 
 }
 
+//concert search function
 function concertSearch(userInput) {
 
     //default if no input
@@ -54,20 +70,36 @@ function concertSearch(userInput) {
     axios.get(queryURL).then(function (response) {
 
         const concert = response.data[0];
+        const dataBox = [];
 
         //if no data available
         if (typeof concert === "undefined") {
             return console.log("Looks like they're not playing anywhere...");
         }
 
-        //console.log(concert);
-        console.log("Venue: " + concert.venue.name);
-        console.log("Location: " + concert.venue.city + ", " + concert.venue.region + ", " + concert.venue.country);
-        console.log(moment(concert.datetime).format("MM/DD/YYYY LT"));
+        dataBox.push(concert.artist.name);
+        dataBox.push("Venue: " + concert.venue.name);
+        dataBox.push("Location: " + concert.venue.city + ", " + concert.venue.region + ", " + concert.venue.country);
+        dataBox.push(moment(concert.datetime).format("MM/DD/YYYY LT"));
+
+        //logs items in databox array to console and log.txt
+        for (let i = 0; i < dataBox.length; i++) {
+            console.log(dataBox[i]);
+            
+            fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+
+                if (error) {
+                    console.log("error");
+                };
+
+            })
+
+        }
     })
 
 }
 
+//omdb search function
 function movieSearch(userInput) {
 
     //default if no input
@@ -98,17 +130,19 @@ function movieSearch(userInput) {
         dataBox.push("Plot: " + movie.Plot);
         dataBox.push("Actors: " + movie.Actors);
 
-        console.log(dataBox);
+        //logs items in databox array to console and log.txt
+        for (let i = 0; i < dataBox.length; i++) {
 
-        for (let i = 0; i < dataBox.length; i++){
-        fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+            console.log(dataBox[i]);
 
-            if (error) {
-                console.log("error");
-            };
-        
-        })
-    }
+            fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+
+                if (error) {
+                    console.log("error");
+                };
+
+            })
+        }
 
     }).catch(function (error) {
         console.log(error);
@@ -116,6 +150,7 @@ function movieSearch(userInput) {
 
 }
 
+//runs function from random.txt
 function readRandom() {
     fs.readFile("random.txt", "utf8", function (error, data) {
 
@@ -130,7 +165,7 @@ function readRandom() {
 
         console.log(userInput)
 
-        runLiri(command,userInput);
+        runLiri(command, userInput);
 
     })
 }
