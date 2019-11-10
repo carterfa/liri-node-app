@@ -56,5 +56,5 @@ SPOTIFY_SECRET=your-spotify-secret
 
 6. To view the data from all of your searches, open the `log.txt` file.
     
-
+[Video Demonstration](https://drive.google.com/file/d/1yd2Bjn9KSL1-udKSWDzyWylPGjrR3Y9L/view)
 
