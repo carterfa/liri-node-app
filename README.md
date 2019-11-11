@@ -18,7 +18,7 @@ LIRI uses the following technologies:
 
   API:
 
-  * [OMDB API](http://www.omdbapi.com) 
+  * [Seat Geek API](https://platform.seatgeek.com/) 
 
   * [Bands In Town API](http://www.artists.bandsintown.com/bandsintown-api)
 
@@ -32,15 +32,19 @@ This app was created during Georgia Tech's Coding Boot Camp program in 2019.
 
 1. Clone this repository and ensure the above packages are installed.
 
-2. Create a `.env` file that includes your Spotify API keys in the following format:
+2. Create a `.env` file that includes your Spotify and Seat Geek API keys in the following format:
 
 ```js
 # Spotify API keys
 
 SPOTIFY_ID=your-spotify-id
 SPOTIFY_SECRET=your-spotify-secret
+
+# Seat Geek API key
+SEATGEEK_ID=your-seatgeek-id
 ```
 (You can get Spotify API keys by going to (https://developer.spotify.com/) and creating an app.)
+(You can get a Seat Geek API key by going to (https://seatgeek.com/account/develop) and creating an app)
 
 3. Type in `node liri.js spotify-this-song` then a song title on the command line to have LIRI give the data on a specific song.
 

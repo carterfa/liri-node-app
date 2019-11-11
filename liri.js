@@ -6,6 +6,7 @@ var spotify = new Spotify(keys.spotify);
 var axios = require('axios');
 var moment = require('moment');
 var fs = require('fs');
+var seatGeekKey = keys.seatgeek.id;
 
 //grabs variable from command line
 let command = process.argv[2];
@@ -29,29 +30,36 @@ function songSearch(userInput) {
         const data = response.tracks.items[0];
         const dataBox = [];
 
-        //console logs all song data
-        dataBox.push("Song Title: " + data.name);
-        dataBox.push("Artist(s): ");
+
         //this just outputs multiple artists separately
-        for (let i = 0; i < data.artists.length; i++) {
-            dataBox.push(data.artists[i].name);
+        let artistNames = data.artists[0].name;
+        if (data.artists.length > 1) {
+            for (let i = 1; i < data.artists.length; i++) {
+                artistNames += ", " + data.artists[i].name;
+            }
         }
-        dataBox.push("Preview: " + data.preview_url);
-        dataBox.push("Album: " + data.album.name);
 
-        //logs items in databox array to console and log.txt
-        for (let i = 0; i < dataBox.length; i++) {
-            console.log(dataBox[i]);
+        //console logs all song data
+        const songData =
+`Song Title: ${data.name}
+Artists: ${artistNames}
+Preview: ${data.preview_url}
+Album: ${data.album.name}
+---------------`
 
-            fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+        console.log(songData);
 
-                if (error) {
-                    console.log("error");
-                };
+        //logs items to log.txt
 
-            })
+        fs.appendFile("log.txt", "\n" + songData, function (error) {
 
-        }
+            if (error) {
+                console.log("error");
+            };
+
+        })
+
+
     }).catch(function (error) {
         console.log(error);
     });
@@ -66,37 +74,42 @@ function concertSearch(userInput) {
         userInput = "Asheville+Symphony";
     }
 
-    let queryURL = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp";
+    let queryURL = "https://api.seatgeek.com/2/events?q=" + userInput + "&client_id=" + seatGeekKey;
 
     axios.get(queryURL).then(function (response) {
 
-        const concert = response.data[0];
-        const dataBox = [];
+        const concert = response.data.events[0];
+
+        //console.log(concert);
 
         //if no data available
         if (typeof concert === "undefined") {
             return console.log("Looks like they're not playing anywhere...");
         }
 
-        dataBox.push(concert.artist.name);
-        dataBox.push("Venue: " + concert.venue.name);
-        dataBox.push("Location: " + concert.venue.city + ", " + concert.venue.region + ", " + concert.venue.country);
-        dataBox.push(moment(concert.datetime).format("MM/DD/YYYY LT"));
+        const concertData =
+`Title: ${concert.title}
+Venue: ${concert.venue.name}
+Location:  ${concert.venue.extended_address}
+Date: ${moment(concert.datetime_local).format("MM/DD/YYYY LT")}
+---------------`
 
-        //logs items in databox array to console and log.txt
-        for (let i = 0; i < dataBox.length; i++) {
-            console.log(dataBox[i]);
+        console.log(concertData);
 
-            fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+        //logs items to log.txt
+        fs.appendFile("log.txt", "\n" + concertData, function (error) {
 
-                if (error) {
-                    console.log("error");
-                };
+            if (error) {
+                console.log("error");
+            };
 
-            })
+        })
 
-        }
-    })
+
+    }).catch(function (error) {
+        console.log(error);
+    });
+
 
 }
 
@@ -115,37 +128,36 @@ function movieSearch(userInput) {
 
     axios.get(queryURL).then(function (response) {
         const movie = response.data;
-        const dataBox = [];
-
-        dataBox.push("Title: " + movie.Title);
-        dataBox.push("Year: " + movie.Year);
-        dataBox.push("imdb Rating: " + movie.imdbRating);
 
         //only logs rotten tomatoes rating if there is one
+        let rt = "";
         if (movie.Ratings !== undefined) {
             if (movie.Ratings[1] !== undefined) {
-                dataBox.push("Rotten Tomatoes: " + movie.Ratings[1].Value);
+                rt = movie.Ratings[1].Value;
             }
         }
 
-        dataBox.push("Country: " + movie.Country);
-        dataBox.push("Language: " + movie.Language);
-        dataBox.push("Plot: " + movie.Plot);
-        dataBox.push("Actors: " + movie.Actors);
+        const movieData =
+`Title: ${movie.Title}
+Year: ${movie.Year}
+imdb Rating: ${movie.imdbRating}
+Rotten Tomatoes Rating: ${rt}
+Country: ${movie.Country}
+Language: ${movie.Language}
+Plot: ${movie.Plot}
+Actors ${movie.Actors}
+---------------`
 
-        //logs items in databox array to console and log.txt
-        for (let i = 0; i < dataBox.length; i++) {
+        console.log(movieData);
 
-            console.log(dataBox[i]);
+        //logs items to log.txt
+        fs.appendFile("log.txt", "\n" + movieData, function (error) {
 
-            fs.appendFile("log.txt", dataBox[i] + "\n", function (error) {
+            if (error) {
+                console.log("error");
+            };
 
-                if (error) {
-                    console.log("error");
-                };
-
-            })
-        }
+        })
 
     }).catch(function (error) {
         console.log(error);
