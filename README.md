@@ -48,13 +48,13 @@ SPOTIFY_SECRET=your-spotify-secret
 
 5. Type in `node liri.js movie-this` then a movie title on the command line to have LIRI give data on a specific movie.
 
-5. Type in `node liri.js do-what-it-says` to have LIRI perform the command in the `random.txt` file. To customize: Within the random.txt file, write the function that you want LIRI to perform followed by a comma. Then, with no extra space include your query inside of quotation marks.
+6. Type in `node liri.js do-what-it-says` to have LIRI perform the command in the `random.txt` file. Within the random.txt file, write the function that you want LIRI to perform followed by a comma. Then, with no extra space include your query inside of quotation marks.
 
   ex. movie-this,"Back to the Future"
   ex. concert-this,"Ariana Grande"
   ex. spotify-this-song,"I Want It That Way"
 
-6. To view the data from all of your searches, open the `log.txt` file.
+7. To view the data from all of your searches, open the `log.txt` file.
     
 [Video Demonstration](https://drive.google.com/file/d/1yd2Bjn9KSL1-udKSWDzyWylPGjrR3Y9L/view)
 
