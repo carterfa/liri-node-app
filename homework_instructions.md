@@ -6,17 +6,17 @@ In this assignment, you will make LIRI. LIRI is like iPhone's SIRI. However, whi
 
 ### Before You Begin
 
-1. LIRI will search Spotify for songs, Bands in Town for concerts, and OMDB for movies.
+1. LIRI will search Spotify for songs, SeatGeek for concerts, and OMDB for movies.
 
 2. Make a new GitHub repository called liri-node-app and clone it to your computer.
 
-3. To retrieve the data that will power this app, you'll need to send requests using the `axios` package to the Bands in Town, Spotify and OMDB APIs. You'll find these Node packages crucial for your assignment.
+3. To retrieve the data that will power this app, you'll need to send requests using the `axios` package to the SeatGeek, Spotify and OMDB APIs. You'll find these Node packages crucial for your assignment.
 
    * [Node-Spotify-API](https://www.npmjs.com/package/node-spotify-api)
 
    * [Axios](https://www.npmjs.com/package/axios)
 
-     * You'll use Axios to grab data from the [OMDB API](http://www.omdbapi.com) and the [Bands In Town API](http://www.artists.bandsintown.com/bandsintown-api)
+     * You'll use Axios to grab data from the [OMDB API](http://www.omdbapi.com) and the [SeatGeek API](http://platform.seatgeek.com/#events)
 
    * [Moment](https://www.npmjs.com/package/moment)
 
@@ -139,7 +139,7 @@ require("dotenv").config();
 
 1. `node liri.js concert-this <artist/band name here>`
 
-   * This will search the Bands in Town Artist Events API (`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) for an artist and render the following information about each event to the terminal:
+   * This will search the SeatGeek Artist Events API for an artist and render the following information about each event to the terminal:
 
      * Name of the venue
 

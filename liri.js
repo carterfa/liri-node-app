@@ -28,7 +28,6 @@ function songSearch(userInput) {
         }
     ).then(function (response) {
         const data = response.tracks.items[0];
-        const dataBox = [];
 
 
         //this just outputs multiple artists separately
