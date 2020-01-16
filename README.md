@@ -23,10 +23,6 @@ LIRI uses the following technologies:
   * [OMDB API](http://www.omdbapi.com)
 
   * [Spotify API](https://developer.spotify.com/documentation/web-api/)
-
-This app was created during Georgia Tech's Coding Boot Camp program in 2019.
-
-[Given Instructions:](/homework_instructions.md)
   
 ## How to Use
 
